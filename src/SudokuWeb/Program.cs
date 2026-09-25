@@ -9,6 +9,11 @@ builder.Services.AddMemoryCache();                  // in-memory storage for gam
 builder.Services.AddSingleton<SudokuGameStore>();   // saves/looks up solutions by game id
 builder.Services.AddSingleton<SudokuGenerator>();   // builds random, uniquely solvable puzzles
 
+// Video search index for the YouTube player. Built once at startup (the O(N log N) sort),
+// then shared by every search request.
+builder.Services.AddSingleton(_ =>
+    VideoSearchIndex.LoadFromFile(Path.Combine(AppContext.BaseDirectory, "Data", "videos.json")));
+
 var app = builder.Build();
 
 // Serve the webpage (wwwroot/index.html, app.js, styles.css).
@@ -55,6 +60,17 @@ app.MapPost("/api/sudoku/{gameId}/check", (string gameId, CheckRequest request, 
     return Results.Ok(SudokuChecker.Check(request.Board!, solution));
 });
 
+// GET /api/videos/search?q=lofi%20stu&limit=8
+// Search-as-you-type for the YouTube player: returns the videos whose title,
+// channel or tags start with every word typed so far, best matches first.
+app.MapGet("/api/videos/search", (string? q, int? limit, VideoSearchIndex index) =>
+{
+    int max = Math.Clamp(limit ?? 8, 1, 25);
+    var results = index.Search(q, max)
+        .Select(v => new VideoResult(v.Id, v.Title, v.Channel));
+    return Results.Ok(results);
+});
+
 // Open the game in the default browser once the server is listening (development only).
 BrowserLauncher.OpenWhenStarted(app);
 
@@ -65,6 +81,7 @@ app.Run();
 // ----------------------------------------------------------------------
 public record NewGameResponse(string GameId, int[][] Puzzle);
 public record CheckRequest(int[][]? Board);
+public record VideoResult(string Id, string Title, string Channel);
 
 // Exposes Program to the test project (for WebApplicationFactory-style tests if added later).
 public partial class Program;

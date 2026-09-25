@@ -143,7 +143,7 @@ button:disabled {
     position: fixed;          /* stays in the corner while the page scrolls */
     top: 16px;
     right: 16px;
-    width: 340px;
+    width: 420px;             /* player is ~420x236 (16:9) */
     z-index: 10;
     background: #fff;
     border: 1px solid #afb8c1;
@@ -179,19 +179,86 @@ button:disabled {
     padding: 10px;
 }
 
-.video-form {
-    display: flex;
-    gap: 6px;
+.video-search {
+    position: relative;       /* the results list is positioned under the input */
     margin-bottom: 8px;
 }
 
-.video-form input {
-    flex: 1;
-    min-width: 0;
+.video-search input {
+    width: 100%;
+    box-sizing: border-box;
     font: inherit;
-    padding: 6px 8px;
+    padding: 7px 10px;
     border: 1px solid #afb8c1;
     border-radius: 6px;
+}
+
+/* Dropdown of search results; floats over the player below it. */
+.video-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    max-height: 320px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #afb8c1;
+    border-radius: 6px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    text-align: left;
+}
+
+.video-result {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+/* Highlight for the mouse-hovered or arrow-key-selected result. */
+.video-result:hover,
+.video-result.active {
+    background: #ddf4ff;
+}
+
+.video-result img {
+    flex: none;
+    width: 64px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 4px;
+    background: #eaeef2;
+}
+
+.video-result-text {
+    min-width: 0;             /* lets long titles be cut off with "..." */
+}
+
+.video-result-title,
+.video-result-channel {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.video-result-title {
+    font-weight: 600;
+}
+
+.video-result-channel {
+    color: #57606a;
+    font-size: 0.85rem;
+}
+
+.video-no-results {
+    padding: 8px 10px;
+    color: #57606a;
 }
 
 /* Keeps the player at a 16:9 ratio at any width. */
@@ -219,19 +286,24 @@ button:disabled {
     text-align: center;
 }
 
-.video-error {
+.video-status {
     margin: 6px 0 0;
-    color: #cf222e;
+    color: #57606a;
     font-size: 0.9rem;
+    text-align: left;
 }
 
-.video-error:empty {
+.video-status.error {
+    color: #cf222e;
+}
+
+.video-status:empty {
     display: none;
 }
 
 /* Narrower windows: the corner panel would cover the board, so place it
    at the top of the page (still right-aligned) instead of floating over it. */
-@media (max-width: 1240px) {
+@media (max-width: 1400px) {
     .video-panel {
         position: static;
         margin: 16px 16px 0 auto;
