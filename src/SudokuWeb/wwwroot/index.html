@@ -7,6 +7,29 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+    <!-- YouTube player pinned to the top-right corner.
+         Paste a YouTube link, press Play, and it plays in the embedded player.
+         The "–" button hides the player without stopping the video. -->
+    <aside id="video-panel" class="video-panel" aria-label="YouTube player">
+        <div class="video-header">
+            <span>YouTube</span>
+            <button id="video-toggle" type="button" class="icon-button"
+                    aria-expanded="true" aria-controls="video-body" title="Hide player">&ndash;</button>
+        </div>
+        <div id="video-body" class="video-body">
+            <form id="video-form" class="video-form">
+                <input id="video-url" type="text" placeholder="Paste a YouTube link"
+                       aria-label="YouTube link" autocomplete="off" />
+                <button type="submit">Play</button>
+            </form>
+            <!-- app.js puts the YouTube <iframe> in here -->
+            <div id="video-frame" class="video-frame">
+                <p class="video-hint">Paste a YouTube link above to play a video while you solve.</p>
+            </div>
+            <p id="video-error" class="video-error" role="alert"></p>
+        </div>
+    </aside>
+
     <main class="app">
         <h1>Sudoku</h1>
         <p class="subtitle">Fill every row, column and 3x3 box with the numbers 1&ndash;9.</p>
@@ -37,5 +60,6 @@
     </main>
 
     <script src="app.js"></script>
+    <script src="video.js"></script>
 </body>
 </html>
