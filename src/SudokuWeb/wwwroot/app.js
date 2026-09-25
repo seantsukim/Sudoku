@@ -16,6 +16,10 @@
     // Id of the current game on the server (the solution lives there, not in the browser).
     let gameId = null;
 
+    // Counts puzzle requests. If the difficulty is changed several times quickly,
+    // only the newest request's board is drawn; older answers are ignored.
+    let latestRequest = 0;
+
     // ---------- Helpers ----------
 
     /** Shows a message under the board. kind = "success" | "error" | "info". */
@@ -101,11 +105,17 @@
 
     // ---------- Talking to the server ----------
 
-    /** Requests a new random puzzle from the server and draws it. */
+    /**
+     * Requests a new random puzzle for the selected difficulty and draws it.
+     * Called on page load, by the "New Game" button, and whenever the difficulty changes.
+     */
     async function newGame() {
+        const requestId = ++latestRequest;
+        const difficultyName = difficultyEl.options[difficultyEl.selectedIndex].text;
+
         newGameBtn.disabled = true;
         checkBtn.disabled = true;
-        showMessage("Generating a new puzzle...");
+        showMessage(`Generating a new ${difficultyName} puzzle...`);
 
         try {
             const difficulty = encodeURIComponent(difficultyEl.value);
@@ -115,14 +125,23 @@
             }
 
             const data = await response.json();
+            if (requestId !== latestRequest) {
+                return; // a newer request was started meanwhile; let that one draw the board
+            }
+
             gameId = data.gameId;
             renderBoard(data.puzzle);
-            showMessage("Good luck!");
+            showMessage(`New ${difficultyName} puzzle. Good luck!`);
         } catch (err) {
-            showMessage(`Could not load a puzzle: ${err.message}`, "error");
+            if (requestId === latestRequest) {
+                showMessage(`Could not load a puzzle: ${err.message}`, "error");
+            }
         } finally {
-            newGameBtn.disabled = false;
-            checkBtn.disabled = false;
+            // Only the newest request re-enables the buttons.
+            if (requestId === latestRequest) {
+                newGameBtn.disabled = false;
+                checkBtn.disabled = false;
+            }
         }
     }
 
@@ -182,6 +201,8 @@
 
     // ---------- Wire up buttons and load the first puzzle ----------
     newGameBtn.addEventListener("click", newGame);
+    // Changing the difficulty immediately starts a fresh board at that difficulty.
+    difficultyEl.addEventListener("change", newGame);
     checkBtn.addEventListener("click", checkAnswer);
     clearBtn.addEventListener("click", clearEntries);
 

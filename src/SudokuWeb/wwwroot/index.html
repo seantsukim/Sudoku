@@ -8,8 +8,7 @@
 </head>
 <body>
     <!-- YouTube player pinned to the top-right corner.
-         Type in the search bar; matching videos appear as you type (searched on the server).
-         Pick one with a click or the arrow keys + Enter, and it plays in the embedded player.
+         Paste a YouTube link, press Play, and it plays in the embedded player.
          The "–" button hides the player without stopping the video. -->
     <aside id="video-panel" class="video-panel" aria-label="YouTube player">
         <div class="video-header">
@@ -18,18 +17,16 @@
                     aria-expanded="true" aria-controls="video-body" title="Hide player">&ndash;</button>
         </div>
         <div id="video-body" class="video-body">
-            <!-- Search bar + dropdown list of results (a "combobox" for screen readers) -->
-            <div class="video-search">
-                <input id="video-search" type="search" placeholder="Search videos (e.g. lofi, queen, 80s)"
-                       role="combobox" aria-label="Search videos" aria-autocomplete="list"
-                       aria-expanded="false" aria-controls="video-results" autocomplete="off" />
-                <ul id="video-results" class="video-results" role="listbox" aria-label="Search results" hidden></ul>
-            </div>
-            <!-- video.js puts the YouTube <iframe> in here -->
+            <form id="video-form" class="video-form">
+                <input id="video-url" type="text" placeholder="Paste a YouTube link"
+                       aria-label="YouTube link" autocomplete="off" />
+                <button type="submit">Play</button>
+            </form>
+            <!-- app.js puts the YouTube <iframe> in here -->
             <div id="video-frame" class="video-frame">
-                <p class="video-hint">Search for a video above to play it while you solve.</p>
+                <p class="video-hint">Paste a YouTube link above to play a video while you solve.</p>
             </div>
-            <p id="video-status" class="video-status" role="status" aria-live="polite"></p>
+            <p id="video-error" class="video-error" role="alert"></p>
         </div>
     </aside>
 
@@ -37,7 +34,8 @@
         <h1>Sudoku</h1>
         <p class="subtitle">Fill every row, column and 3x3 box with the numbers 1&ndash;9.</p>
 
-        <!-- Game controls: pick a difficulty and start a new random board -->
+        <!-- Game controls: changing the difficulty starts a new board at that level;
+             "New Game" starts another board at the current level -->
         <section class="controls">
             <label for="difficulty">Difficulty</label>
             <select id="difficulty">

@@ -6,9 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- The searchable video list; copied next to the app so it's found at runtime and in tests. -->
-    <Content Update="Data\videos.json" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>
