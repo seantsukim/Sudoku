@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <main class="app">
+        <h1>Sudoku</h1>
+        <p class="subtitle">Fill every row, column and 3x3 box with the numbers 1&ndash;9.</p>
+
+        <!-- Game controls: pick a difficulty and start a new random board -->
+        <section class="controls">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="new-game" type="button">New Game</button>
+        </section>
+
+        <!-- The 9x9 board. app.js fills this table with 81 cells;
+             starting numbers are fixed, empty cells become 1-9 dropdowns. -->
+        <table id="board" class="board" aria-label="Sudoku board"></table>
+
+        <!-- Answer actions -->
+        <section class="controls">
+            <button id="check" type="button" class="primary">Check Answer</button>
+            <button id="clear" type="button">Clear My Entries</button>
+        </section>
+
+        <!-- Result of "Check Answer" or any error message -->
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

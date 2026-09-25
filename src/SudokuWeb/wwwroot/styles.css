@@ -1,0 +1,139 @@
+/* ---------- Page layout ---------- */
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #f4f5f7;
+    color: #1f2328;
+}
+
+.app {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0 0 4px;
+}
+
+.subtitle {
+    margin: 0 0 16px;
+    color: #57606a;
+}
+
+/* ---------- Buttons & controls ---------- */
+.controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 12px 0;
+}
+
+button,
+.controls select {
+    font: inherit;
+    padding: 6px 14px;
+    border: 1px solid #afb8c1;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+}
+
+button.primary {
+    background: #1f6feb;
+    border-color: #1f6feb;
+    color: #fff;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* ---------- The Sudoku grid ---------- */
+.board {
+    border-collapse: collapse;
+    margin: 0 auto;
+    border: 3px solid #1f2328; /* thick outer border */
+    background: #fff;
+}
+
+.board td {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid #afb8c1;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Thick lines between the 3x3 boxes (after columns 3 & 6 and rows 3 & 6). */
+.board td:nth-child(3n):not(:last-child) {
+    border-right: 3px solid #1f2328;
+}
+
+.board tr:nth-child(3n):not(:last-child) td {
+    border-bottom: 3px solid #1f2328;
+}
+
+/* Starting numbers: fixed, bold, and not editable. */
+.board td.given {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: #eaeef2;
+}
+
+/* Player cells: a dropdown that fills the whole cell. */
+.board select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: 1.3rem;
+    color: #1f6feb;
+    text-align: center;
+    text-align-last: center;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.board select:focus {
+    outline: 2px solid #1f6feb;
+    outline-offset: -2px;
+}
+
+/* Highlighting applied after "Check Answer". */
+.board td.incorrect {
+    background: #ffd7d5;
+}
+
+.board td.solved {
+    background: #dafbe1;
+}
+
+/* ---------- Result message ---------- */
+.message {
+    min-height: 1.5em;
+    font-weight: 600;
+}
+
+.message.success { color: #1a7f37; }
+.message.error   { color: #cf222e; }
+.message.info    { color: #57606a; }
+
+/* ---------- Small screens: shrink cells so the grid fits ---------- */
+@media (max-width: 480px) {
+    .board td {
+        width: 36px;
+        height: 36px;
+    }
+
+    .board td.given,
+    .board select {
+        font-size: 1.1rem;
+    }
+}
