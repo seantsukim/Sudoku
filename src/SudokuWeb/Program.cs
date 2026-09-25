@@ -55,6 +55,9 @@ app.MapPost("/api/sudoku/{gameId}/check", (string gameId, CheckRequest request, 
     return Results.Ok(SudokuChecker.Check(request.Board!, solution));
 });
 
+// Open the game in the default browser once the server is listening (development only).
+BrowserLauncher.OpenWhenStarted(app);
+
 app.Run();
 
 // ----------------------------------------------------------------------

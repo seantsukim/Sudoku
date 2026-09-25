@@ -137,3 +137,104 @@ button:disabled {
         font-size: 1.1rem;
     }
 }
+
+/* ---------- YouTube player (top-right corner) ---------- */
+.video-panel {
+    position: fixed;          /* stays in the corner while the page scrolls */
+    top: 16px;
+    right: 16px;
+    width: 340px;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #afb8c1;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.video-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: #1f2328;
+    color: #fff;
+    font-weight: 600;
+}
+
+.icon-button {
+    padding: 0 10px;
+    line-height: 1.4;
+    background: transparent;
+    border-color: #57606a;
+    color: #fff;
+}
+
+/* Hidden state: only the header bar stays visible. */
+.video-panel.collapsed .video-body {
+    display: none;
+}
+
+.video-body {
+    padding: 10px;
+}
+
+.video-form {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.video-form input {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    padding: 6px 8px;
+    border: 1px solid #afb8c1;
+    border-radius: 6px;
+}
+
+/* Keeps the player at a 16:9 ratio at any width. */
+.video-frame {
+    aspect-ratio: 16 / 9;
+    background: #eaeef2;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.video-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-hint {
+    margin: 0;
+    padding: 0 16px;
+    color: #57606a;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.video-error {
+    margin: 6px 0 0;
+    color: #cf222e;
+    font-size: 0.9rem;
+}
+
+.video-error:empty {
+    display: none;
+}
+
+/* Narrower windows: the corner panel would cover the board, so place it
+   at the top of the page (still right-aligned) instead of floating over it. */
+@media (max-width: 1240px) {
+    .video-panel {
+        position: static;
+        margin: 16px 16px 0 auto;
+        max-width: calc(100% - 32px);
+    }
+}
